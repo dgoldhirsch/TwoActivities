@@ -1,13 +1,16 @@
-# TwoActivities
-This is my working through of [https://codelabs.developers.google.com/codelabs/android-training-create-an-activity/#0](https://codelabs.developers.google.com/codelabs/android-training-create-an-activity/#0)
+# TwoActivities (with Lifecycle Management)
+This is my working through of the two Codelab lessons:
+* [https://codelabs.developers.google.com/codelabs/android-training-create-an-activity/#0](https://codelabs.developers.google.com/codelabs/android-training-create-an-activity/#0)
+* [https://codelabs.developers.google.com/codelabs/android-training-activity-lifecycle-and-state/#0](https://codelabs.developers.google.com/codelabs/android-training-activity-lifecycle-and-state/#0)
 
-The tutorial tells you exactly what to do, so, for the most part this is simply copy/pasted.
-I did add one thing: as given by Google, the application
-allows one to "reply" with no text--you can click the Reply
-button, and, your (empty) message is reported back to the
-main activity.  I added an 'if' such that the replying activity
-finishes if and only if the message isn't empty.
+Most of the code is copy-pasted, but I believe I improved the suggested code in a few ways:
+* I prefer to encode the English value of a string resource in its name.  For example, the string value, "Message Reply," is declared as follows:
 
-Classier would be to disable the Reply button as well, unless
-the reply-text is non-empty.
-
+```java
+<string name="EnterYourMessageHere">Enter Your Message Here</string>
+```
+* The code suggested by Google allows a user to send an empty reply from
+the second activity to the first.  This looks odd to me, so, I added a guard
+in the second activity to finish itself only if there is a non-blank reply.
+(In real-life, I'd go further and disable the Reply button of the second
+activity unless there is some actual text in the reply.)
