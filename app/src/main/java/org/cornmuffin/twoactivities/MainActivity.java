@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "org.cornmuffin.twoactivities.extra.MESSAGE";
@@ -29,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         mReplyHeadTextView = findViewById(R.id.text_header_reply);
         mReplyTextView = findViewById(R.id.text_message_reply);
 
-        if(savedInstanceState != null) {
-            if(savedInstanceState.getBoolean("reply_visible")) {
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getBoolean("reply_visible")) {
                 mReplyHeadTextView.setVisibility(View.VISIBLE);
                 mReplyTextView.setText(savedInstanceState.getString("reply_text"));
                 mReplyTextView.setVisibility(View.VISIBLE);
@@ -40,9 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void launchSecondActivity(View view) {
         Log.d(LOG_TAG, "Button clicked!");
-        Intent intent = new Intent(this, SecondActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, mMessageEditText.getText().toString());
-        startActivityForResult(intent, TEXT_REQUEST);
+
+        if (mMessageEditText.getText().length() > 0) {
+            Intent intent = new Intent(this, SecondActivity.class);
+            intent.putExtra(EXTRA_MESSAGE, mMessageEditText.getText().toString());
+            startActivityForResult(intent, TEXT_REQUEST);
+        } else {
+            displayToast(getString(R.string.please_enter_a_message_to_be_sent));
+        }
     }
 
     @Override
@@ -62,9 +68,13 @@ public class MainActivity extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if(mReplyHeadTextView.getVisibility() == View.VISIBLE) {
+        if (mReplyHeadTextView.getVisibility() == View.VISIBLE) {
             outState.putBoolean("reply_visible", true);
             outState.putString("reply_text", mReplyTextView.getText().toString());
         }
+    }
+
+    private void displayToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
